@@ -29,7 +29,7 @@ FPS = 500
 BLACK = (0, 0, 0, 255)
 WHITE = (255, 255, 255, 255)
 
-bg = pygame.image.load("mountains.png").convert()
+bg = pygame.image.load(".\mountains.png").convert()
 bgWidth, bgHeight = bg.get_rect().size
 
 stageWidth = bgWidth * 2
@@ -60,6 +60,7 @@ while True:
 	playerPosX += playerVelocityX
 	if playerPosX > stageWidth - circleRadius: playerPosX = stageWidth - circleRadius
 	if playerPosX < circleRadius: playerPosX = circleRadius
+	
 	if playerPosX < startScrollingPosX: circlePosX = playerPosX
 	elif playerPosX > stageWidth - startScrollingPosX: circlePosX = playerPosX - stageWidth + W
 	else:
@@ -71,7 +72,7 @@ while True:
 	if rel_x < W:
 		DS.blit(bg, (rel_x, 0))
 	
-	pygame.draw.circle(DS, WHITE, (circlePosX, playerPosY - 25), circleRadius, 0)
+	pygame.draw.circle(DS, WHITE, (int (circlePosX), playerPosY - 25), circleRadius, 0)
 
 	pygame.display.update()
 	CLOCK.tick(FPS)
