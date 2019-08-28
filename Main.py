@@ -6,11 +6,11 @@ pygame.init()
 
 # define display surface
 ScrW = 1000
-scrH = 700			
-HW, HH = ScrW / 2, scrH / 2
+ScrH = 700			
+HW, HH = ScrW / 2, ScrH / 2
 
 
-win =  pygame.display.set_mode((ScrW, scrH))
+win =  pygame.display.set_mode((ScrW, ScrH))
 pygame.display.set_caption("BommerMan")
 
 vol = 5
@@ -84,20 +84,20 @@ class movement:
 		if self.y > ScrH - self.size[1]: self.y = ScrH - self.size[1]
 		if self.y < ScrH : self.x = ScrH
 
-		if 
+		# if 
 
-		if self.x < HW: circlePosX = self.x
-		elif self.x > stageWidth - startScrollingPosX: circlePosX = self.x - self.size[0] + W
-		else:
-			circlePosX = startScrollingPosX
-			stagePosX += - vol
+		# if self.x < HW: circlePosX = self.x
+		# elif self.x > stageWidth - startScrollingPosX: circlePosX = self.x - self.size[0] + W
+		# else:
+		# 	circlePosX = startScrollingPosX
+		# 	stagePosX += - vol
 	
-		self.rel_x = stagePosX % 2000
-		spritesheet.draw(win, 0,self.rel_x - 2000,0)
-		#DS.blit(bg, (self.rel_x - bgWidth, 0))
-		if self.rel_x < W:
-			spritesheet.draw(win, 0,self.rel_x,0)
-			#DS.blit(bg, (self.rel_x, 0))
+		# self.rel_x = stagePosX % 2000
+		# spritesheet.draw(win, 0,self.rel_x - 2000,0)
+		# #DS.blit(bg, (self.rel_x - bgWidth, 0))
+		# if self.rel_x < W:
+		# 	spritesheet.draw(win, 0,self.rel_x,0)
+		# 	#DS.blit(bg, (self.rel_x, 0))
 
 		spritesheet.draw(win, self.index [self.i] [self.j] , self.x, self.y,0)			
 		pygame.display.update()
