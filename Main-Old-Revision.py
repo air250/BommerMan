@@ -5,18 +5,16 @@ from pygame.locals import *
 pygame.init()
 
 # define display surface
-ScrW = 1280
-ScrH = 720			
+ScrW = 1000
+ScrH = 700			
 HW, HH = ScrW / 2, ScrH / 2
 
 
 win =  pygame.display.set_mode((ScrW, ScrH))
 pygame.display.set_caption("BommerMan")
 
-w, h = pygame.display.get_surface().get_size()
-
-vol = 10
-FPS = 30
+vol = 5
+FPS = 10
 clock = pygame.time.Clock()
 
 # define some colors
@@ -58,8 +56,6 @@ class movement:
 		self.i = 0
 		self.j = 0
 
-		#.get_rect().size
-
 		
 	def xyWalk (self, spritesheet, frames):
 
@@ -84,31 +80,27 @@ class movement:
 		if self.j == frames: self.j = 0
 
 		if self.x > ScrW - self.size[0]: self.x = ScrW - self.size[0]
-		if self.x < 0 : self.x = 0
+		if self.x < ScrW : self.x = ScrW
 		if self.y > ScrH - self.size[1]: self.y = ScrH - self.size[1]
-		if self.y < 0 : self.y = 0
+		if self.y < ScrH : self.x = ScrH
 
-		print (self.x,self.y)
-		print (w,h)
-		spritesheet.draw(win, self.index [self.i] [self.j] , self.x, self.y,0)				
-		pygame.display.update()
-		win.fill(black)	
+		#if 
 
-		def background (self,spritesheet):
-			print (" ")
-		
-		if self.x < HW: PosX = self.x
-		# elif self.x > stageWidth - startScrollingPosX: circlePosX = self.x - self.size[0] + W
-		# else:
-		# 	circlePosX = startScrollingPosX
-		# 	stagePosX += - vol
+		if self.x < HW: circlePosX = self.x
+	#	elif self.x > stageWidth - startScrollingPosX: circlePosX = self.x - self.size[0] + W
+		else:
+			circlePosX = startScrollingPosX
+			stagePosX += - vol
 	
-		# self.rel_x = stagePosX % 2000
-		# spritesheet.draw(win, 0,self.rel_x - 2000,0)
-		# DS.blit(bg, (self.rel_x - bgWidth, 0))
-		# if self.rel_x < W:
-		# 	spritesheet.draw(win, 0,self.rel_x,0)
-		# 	#DS.blit(bg, (self.rel_x, 0))
+		self.rel_x = stagePosX % 2000
+		spritesheet.draw(win, 0,self.rel_x - 2000,0)
+		#DS.blit(bg, (self.rel_x - bgWidth, 0))
+		if self.rel_x < W:
+			spritesheet.draw(win, 0,self.rel_x,0)
+			#DS.blit(bg, (self.rel_x, 0))
+
+		spritesheet.draw(win, self.index [self.i] [self.j] , self.x, self.y,0)			
+		pygame.display.update()
 
 # exit the program
 def events():
@@ -119,15 +111,14 @@ def events():
 
 def main():
 	#s = spritesheet(".\Movement.png", 12, 2)
-	#b = spritesheet(".\Background.jpg",1,1)
+	b = spritesheet(".\Background.jpg",1,1)
 	s = spritesheet(".\FBI.png", 9, 4)
 	m = movement(s)
-	#w = movement(b,0,0)
+	w = movement(b)
 
 	while True:
 		events()
-		m.xyWalk(s, 9)
-		#w.background (b)		
+		m.xyWalk(s, 9)		
 		clock.tick(FPS)
 		
         
