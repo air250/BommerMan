@@ -1,5 +1,4 @@
-import math, random, sys, numpy
-import pygame
+import math, random, sys, numpy, pygame
 from pygame.locals import *
 
 pygame.init()
@@ -46,7 +45,7 @@ class spritesheet:
 		surface.blit(self.sheet, (x + self.handle[handle][0], y + self.handle[handle][1]), self.cells[cellIndex])
 	
 	def spriteSize (self):
-		return self.cellWidth, self.cellHeight, self.totalCellCount ,  self.cols , self.rows
+		return self.cellWidth, self.cellHeight, self.totalCellCount ,  self.cols , self.rows , self.sheet.get_rect().size
 
 class movement:
 	def __init__ (self, spritesheet, intx = HW, inty = HH):	
@@ -58,9 +57,6 @@ class movement:
 		self.i = 0
 		self.j = 0
 
-		#.get_rect().size
-
-		
 	def xyWalk (self, spritesheet, frames):
 
 		self.key = pygame.key.get_pressed()
@@ -84,9 +80,9 @@ class movement:
 		if self.j == frames: self.j = 0
 
 		if self.x > ScrW - self.size[0]: self.x = ScrW - self.size[0]
-		if self.x < 0 : self.x = 0
+		if self.x < 0 : self.x = ScrW
 		if self.y > ScrH - self.size[1]: self.y = ScrH - self.size[1]
-		if self.y < 0 : self.y = 0
+		if self.y < 0 : self.y = ScrH
 
 		print (self.x,self.y)
 		print (w,h)
@@ -94,21 +90,36 @@ class movement:
 		pygame.display.update()
 		win.fill(black)	
 
-		def background (self,spritesheet):
-			print (" ")
+	def spriteData (self):
+		return self.x, self.y, self.size
+
+
+# def background ():
 		
-		if self.x < HW: PosX = self.x
-		# elif self.x > stageWidth - startScrollingPosX: circlePosX = self.x - self.size[0] + W
-		# else:
-		# 	circlePosX = startScrollingPosX
-		# 	stagePosX += - vol
+# 		b = spritesheet(".\Background.jpg",1,1)
+# 		bg = b.spriteSize ()
+# 		sprite = m.spriteData()
+# 		bgWidth, bgHeight = sprite[5]
+# 		print (" ")
+		
+# 		if sprite[0] < HW: PosX = sprite[0]
+# 		elif sprite[0] > bg[0] - HW: PosX = sprite[0] - bg[0] + ScrW 
+# 		else:
+# 			PosX = HW
+# 			stagePosX += - vol
+
+# 		rel_x = stagePosX % bgWidth
+# 		DS.blit(bg, (rel_x - bgWidth, 0))
+# 		if rel_x < W:
+# 			b.draw(win,0, (rel_x, 0))
 	
-		# self.rel_x = stagePosX % 2000
+# 		self.rel_x = stagePosX % 2000
 		# spritesheet.draw(win, 0,self.rel_x - 2000,0)
 		# DS.blit(bg, (self.rel_x - bgWidth, 0))
 		# if self.rel_x < W:
 		# 	spritesheet.draw(win, 0,self.rel_x,0)
 		# 	#DS.blit(bg, (self.rel_x, 0))
+		#b.draw(win,0,PosX,0)
 
 # exit the program
 def events():
@@ -127,6 +138,7 @@ def main():
 	while True:
 		events()
 		m.xyWalk(s, 9)
+		#background()
 		#w.background (b)		
 		clock.tick(FPS)
 		
