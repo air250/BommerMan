@@ -57,12 +57,13 @@ while True:
 	else:
 		playerVelocityX = 0
 		
-	playerPosX += playerVelocityX
+	playerPosX += playerVelocityX  
+	# Boarder Lock 
 	if playerPosX > stageWidth - circleRadius: playerPosX = stageWidth - circleRadius
 	if playerPosX < circleRadius: playerPosX = circleRadius
-	
-	if playerPosX < startScrollingPosX: circlePosX = playerPosX
-	elif playerPosX > stageWidth - startScrollingPosX: circlePosX = playerPosX - stageWidth + W
+	# background movement 
+	if playerPosX < startScrollingPosX: circlePosX = playerPosX  # left screen player movement 
+	elif playerPosX > stageWidth - startScrollingPosX: circlePosX = playerPosX - stageWidth + W 
 	else:
 		circlePosX = startScrollingPosX
 		stagePosX += -playerVelocityX
