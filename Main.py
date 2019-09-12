@@ -48,28 +48,35 @@ class spritesheet:
 		return self.cellWidth, self.cellHeight, self.totalCellCount ,  self.cols , self.rows , self.sheet.get_rect().size
 
 class movement:
-	def __init__ (self, spritesheet, intx = HW, inty = HH):	
-		self.size = spritesheet.spriteSize()
-		
-		self.x = intx
-		self.y = inty
-		self.index = numpy.arange(self.size[3]*self.size[4]).reshape(self.size[4], self.size[3])
-		self.i = 0
-		self.j = 0
+	def __init__ (self, spritesheet, background, intx = HW, inty = HH):	
+		self.size = spritesheet.spriteSize() # Spritesheet data
+		self.BgSize = background.spriteSize()
 
-	def xyWalk (self, spritesheet, frames):
+		self.x = intx #Sprite x posittion
+		self.y = inty #Sprite y Position 
+		self.index = numpy.arange(self.size[3]*self.size[4]).reshape(self.size[4], self.size[3]) # Array to handle all sprites on sprite sheet 
+		self.i = 0 # Select which drirection to cycle on sprite sheet
+		self.j = 0 # The sprite movement cycel 
+
+	def xyWalk (self, spritesheet, frames, panLock):
 
 		self.key = pygame.key.get_pressed()
 		if self.key [pygame.K_LEFT]: 
-			self.i = 1			
-			self.x -= vol 	
+			self.i = 1
+			if panLock:
+				self.x = HW				
+			else:				
+				self.x -= vol 	
 		elif self.key [pygame.K_RIGHT]: 
-			self.i = 3			
-			self.x += vol
-		elif self.key [pygame.K_UP]: 
+			self.i = 3	
+			if panLock:
+				self.x = HW				
+			else:		
+				self.x += vol
+		elif self.key [pygame.K_UP]:
 			self.i = 0			
 			self.y -= vol
-		elif self.key [pygame.K_DOWN]: 
+		elif self.key [pygame.K_DOWN]:
 			self.i = 2			
 			self.y += vol			 		 							
 		else :
@@ -90,36 +97,52 @@ class movement:
 		pygame.display.update()
 		win.fill(black)	
 
-	def spriteData (self):
-		return self.x, self.y, self.size
-
-
-# def background ():
+	def background (self):
 		
-# 		b = spritesheet(".\Background.jpg",1,1)
-# 		bg = b.spriteSize ()
-# 		sprite = m.spriteData()
-# 		bgWidth, bgHeight = sprite[5]
-# 		print (" ")
-		
-# 		if sprite[0] < HW: PosX = sprite[0]
-# 		elif sprite[0] > bg[0] - HW: PosX = sprite[0] - bg[0] + ScrW 
-# 		else:
-# 			PosX = HW
-# 			stagePosX += - vol
+		self.bgWidth, self.bgHeight = self.BgSize[5]
 
-# 		rel_x = stagePosX % bgWidth
-# 		DS.blit(bg, (rel_x - bgWidth, 0))
-# 		if rel_x < W:
-# 			b.draw(win,0, (rel_x, 0))
-	
-# 		self.rel_x = stagePosX % 2000
+		# background movement
+		if self.x < HW:
+			self.panLock = False
+		elif self.x > self.BgSize[0] - HW:
+			self.panLock = False
+		else:
+			self.panLock = True
+		
+		rel_x = self.BgPosX % self.bgWidth
+		background.draw(bg, (rel_x - self.bgWidth, 0))
+		if rel_x < W:
+			background.draw(bg, (rel_x, 0))
+		
+		return self.panLock
+
+		pygame.display.update()
+		win.fill(BLACK)
+		#=-------------------------------------------------------------------------------------------------------
+ 		# if sprite[0] < HW: PosX = sprite[0]
+ 		# elif sprite[0] > self.BgSize[0] - HW: PosX = sprite[0] - self.BgSize[0] + ScrW 
+ 		# else:
+ 		# 	PosX = HW
+ 		# 	stagePosX += - vol
+		
+ 		# rel_x = stagePosX % bgWidth
+ 		# DS.blit(self.BgSize, (rel_x - bgWidth, 0))
+ 		# if rel_x < W:
+ 		# 	b.draw(win,0, (rel_x, 0))
+
+ 		# self.rel_x = stagePosX % 2000
 		# spritesheet.draw(win, 0,self.rel_x - 2000,0)
-		# DS.blit(bg, (self.rel_x - bgWidth, 0))
+		# DS.blit(self.BgSize, (self.rel_x - bgWidth, 0))
 		# if self.rel_x < W:
 		# 	spritesheet.draw(win, 0,self.rel_x,0)
-		# 	#DS.blit(bg, (self.rel_x, 0))
-		#b.draw(win,0,PosX,0)
+		# 	DS.blit(self.BgSize, (self.rel_x, 0))
+		# b.draw(win,0,PosX,0)
+		
+		
+
+
+	def spriteData (self):
+		return self.x, self.y, self.size	
 
 # exit the program
 def events():
@@ -132,13 +155,15 @@ def main():
 	#s = spritesheet(".\Movement.png", 12, 2)
 	#b = spritesheet(".\Background.jpg",1,1)
 	s = spritesheet(".\FBI.png", 9, 4)
-	m = movement(s)
+	b = spritesheet(".\Background.jpg",1,1)
+	m = movement(s,b)
 	#w = movement(b,0,0)
 
 	while True:
 		events()
-		m.xyWalk(s, 9)
-		#background()
+		center =  m.background()
+		m.xyWalk(s, 9, center)
+		#background(b)
 		#w.background (b)		
 		clock.tick(FPS)
 		
