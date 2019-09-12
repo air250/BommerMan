@@ -51,14 +51,15 @@ class movement:
 	def __init__ (self, spritesheet, background, intx = HW, inty = HH):	
 		self.size = spritesheet.spriteSize() # Spritesheet data
 		self.BgSize = background.spriteSize()
-
+		self.BgPosX = 0
+		self.panLock = False
 		self.x = intx #Sprite x posittion
 		self.y = inty #Sprite y Position 
 		self.index = numpy.arange(self.size[3]*self.size[4]).reshape(self.size[4], self.size[3]) # Array to handle all sprites on sprite sheet 
 		self.i = 0 # Select which drirection to cycle on sprite sheet
 		self.j = 0 # The sprite movement cycel 
 
-	def xyWalk (self, spritesheet, frames, panLock):
+	def xyWalk (self, spritesheet, frames, panLock = False):
 
 		self.key = pygame.key.get_pressed()
 		if self.key [pygame.K_LEFT]: 
@@ -92,55 +93,36 @@ class movement:
 		if self.y < 0 : self.y = ScrH
 
 		print (self.x,self.y)
-		print (w,h)
 		spritesheet.draw(win, self.index [self.i] [self.j] , self.x, self.y,0)				
 		pygame.display.update()
 		win.fill(black)	
 
-	def background (self):
+	def background (self, background):
 		
 		self.bgWidth, self.bgHeight = self.BgSize[5]
 
 		# background movement
 		if self.x < HW:
 			self.panLock = False
+			print ("Flag 1 ", self.x)
 		elif self.x > self.BgSize[0] - HW:
 			self.panLock = False
+			print ("Flag 2 ", self.x)
 		else:
+			print ("Flag 3 ", self.x ," ", HW)
 			self.panLock = True
+			self.BgPosX += -vol
 		
-		rel_x = self.BgPosX % self.bgWidth
-		background.draw(bg, (rel_x - self.bgWidth, 0))
-		if rel_x < W:
-			background.draw(bg, (rel_x, 0))
+		self.rel_x = self.BgPosX % self.bgWidth
+		background.draw(win, 0 , self.rel_x - self.bgWidth, 0)
+		if self.rel_x < ScrW:
+			background.draw(win, 0, self.rel_x, 0)
 		
 		return self.panLock
 
 		pygame.display.update()
 		win.fill(BLACK)
-		#=-------------------------------------------------------------------------------------------------------
- 		# if sprite[0] < HW: PosX = sprite[0]
- 		# elif sprite[0] > self.BgSize[0] - HW: PosX = sprite[0] - self.BgSize[0] + ScrW 
- 		# else:
- 		# 	PosX = HW
- 		# 	stagePosX += - vol
 		
- 		# rel_x = stagePosX % bgWidth
- 		# DS.blit(self.BgSize, (rel_x - bgWidth, 0))
- 		# if rel_x < W:
- 		# 	b.draw(win,0, (rel_x, 0))
-
- 		# self.rel_x = stagePosX % 2000
-		# spritesheet.draw(win, 0,self.rel_x - 2000,0)
-		# DS.blit(self.BgSize, (self.rel_x - bgWidth, 0))
-		# if self.rel_x < W:
-		# 	spritesheet.draw(win, 0,self.rel_x,0)
-		# 	DS.blit(self.BgSize, (self.rel_x, 0))
-		# b.draw(win,0,PosX,0)
-		
-		
-
-
 	def spriteData (self):
 		return self.x, self.y, self.size	
 
@@ -154,14 +136,14 @@ def events():
 def main():
 	#s = spritesheet(".\Movement.png", 12, 2)
 	#b = spritesheet(".\Background.jpg",1,1)
-	s = spritesheet(".\FBI.png", 9, 4)
+	s = spritesheet(".\FBI.png", 9, 4 )
 	b = spritesheet(".\Background.jpg",1,1)
 	m = movement(s,b)
 	#w = movement(b,0,0)
 
 	while True:
 		events()
-		center =  m.background()
+		center =  m.background(b)
 		m.xyWalk(s, 9, center)
 		#background(b)
 		#w.background (b)		
