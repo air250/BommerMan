@@ -117,6 +117,7 @@ class movement:
 		background.draw(win, 0 , self.rel_x - self.bgWidth, 0)
 		if self.rel_x < ScrW:
 			background.draw(win, 0, self.rel_x, 0)
+			self.panLock = False
 		
 		return self.panLock
 
