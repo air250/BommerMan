@@ -65,13 +65,15 @@ class movement:
 		if self.key [pygame.K_LEFT]: 
 			self.i = 1
 			if panLock:
-				self.x = HW				
+				self.x = HW	
+				print("PanL")			
 			else:				
 				self.x -= vol 	
 		elif self.key [pygame.K_RIGHT]: 
 			self.i = 3	
 			if panLock:
-				self.x = HW				
+				self.x = HW	
+				print("PanR")				
 			else:		
 				self.x += vol
 		elif self.key [pygame.K_UP]:
@@ -117,6 +119,7 @@ class movement:
 		background.draw(win, 0 , self.rel_x - self.bgWidth, 0)
 		if self.rel_x < ScrW:
 			background.draw(win, 0, self.rel_x, 0)
+			self.panLock = False
 		
 		return self.panLock
 
@@ -138,7 +141,7 @@ def main():
 	#b = spritesheet(".\Background.jpg",1,1)
 	s = spritesheet(".\FBI.png", 9, 4 )
 	b = spritesheet(".\Background.jpg",1,1)
-	m = movement(s,b)
+	m = movement(s,b,20,20)
 	#w = movement(b,0,0)
 
 	while True:
